@@ -1,0 +1,851 @@
+<!doctype html>
+<html lang="az">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#080d1b"><title>BilimStudio AI — İnteraktiv Təhsil Portalı</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#080d1b;color:#e8eefc;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.glass{background:rgba(18,27,49,.88);border:1px solid rgba(148,163,184,.17);box-shadow:0 16px 45px #0002;backdrop-filter:blur(14px)}.soft{background:linear-gradient(135deg,#6366f126,#06b6d415);border:1px solid #818cf833}.navbtn{display:flex;align-items:center;gap:.7rem;width:100%;padding:.72rem .85rem;border-radius:12px;color:#aab8d3;text-align:left;transition:.15s}.navbtn:hover,.navbtn.active{background:#6366f12b;color:white}.navbtn.active{box-shadow:inset 3px 0 #818cf8}.btn{border:1px solid #64748b55;background:#1e293bcc;padding:.65rem .9rem;border-radius:12px;transition:.15s}.btn:hover{border-color:#818cf8;transform:translateY(-1px)}.primary{background:linear-gradient(100deg,#6366f1,#0891b2);border:0;color:white;font-weight:650}.primary:hover{filter:brightness(1.1)}.field{background:#0b1223;border:1px solid #334155;border-radius:12px;padding:.75rem .9rem;width:100%;color:#eef2ff;outline:none}.field:focus{border-color:#818cf8;box-shadow:0 0 0 3px #6366f133}.calc-key{padding:.9rem .3rem;border-radius:12px;background:#18233b;border:1px solid #334155;transition:.12s}.calc-key:hover{background:#293858}.calc-key.op{color:#a5b4fc;background:#22234a}.calc-key.eq{background:linear-gradient(120deg,#6366f1,#0891b2);color:#fff}.section{display:none}.section.active{display:block;animation:fadein .2s ease}.bubble{max-width:88%;padding:.85rem 1rem;border-radius:16px;white-space:pre-wrap;line-height:1.55;overflow-wrap:anywhere}.bubble.user{background:#3730a3;margin-left:auto;border-bottom-right-radius:4px}.bubble.ai{background:#17233a;border:1px solid #334155;border-bottom-left-radius:4px}.light{background:#f1f5f9;color:#0f172a}.light .glass{background:#ffffffed;border-color:#dbe3ef}.light .field{background:white;color:#0f172a;border-color:#cbd5e1}.light .navbtn{color:#475569}.light .navbtn:hover,.light .navbtn.active{color:#312e81;background:#e0e7ff}.light .calc-key{background:#e2e8f0;color:#0f172a;border-color:#cbd5e1}.light .calc-key.op{background:#e0e7ff;color:#4338ca}.light .bubble.ai{background:#f1f5f9;color:#0f172a;border-color:#cbd5e1}.light .text-slate-300,.light .text-slate-400,.light .text-slate-500{color:#475569!important}.light header{background:#f8fafce8}.light #calcScreen{background:#f8fafc;color:#0f172a}@keyframes fadein{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}@media(max-width:767px){#sidebar{transform:translateX(-110%);transition:transform .2s}#sidebar.open{transform:translateX(0)}main{margin-left:0!important}.bubble{max-width:95%}}button:disabled{opacity:.5;cursor:not-allowed;transform:none!important}
+</style>
+</head>
+<body>
+<div class="min-h-screen">
+<aside id="sidebar" class="fixed z-40 inset-y-0 left-0 w-72 p-5 glass border-r border-slate-700/50 flex flex-col">
+ <div class="flex items-center gap-3 px-2 mb-8"><div class="w-11 h-11 rounded-2xl primary flex items-center justify-center text-2xl">✦</div><div><div class="font-extrabold tracking-tight text-lg">BilimStudio <span class="text-cyan-300">AI</span></div><div class="text-xs text-slate-400" data-i18n="tagline">Öyrən, kəşf et, düşün</div></div><button id="closeSide" class="md:hidden ml-auto">✕</button></div>
+ <div class="text-[10px] uppercase tracking-[.2em] text-slate-500 px-3 mb-2" data-i18n="workspace">İş sahəsi</div>
+ <nav class="space-y-1 flex-1" id="nav">
+  <button class="navbtn active" data-page="home">⌂ <span data-i18n="home">İdarə paneli</span></button>
+  <button class="navbtn" data-page="chat">✧ <span data-i18n="chat">Sokratik müəllim</span><span class="ml-auto text-xs text-cyan-300">AI</span></button>
+  <button class="navbtn" data-page="lessons">▤ <span data-i18n="lessons">Dərs izahları</span></button>
+  <button class="navbtn" data-page="quiz">◎ <span data-i18n="quiz">Milli kuizlər</span></button>
+  <button class="navbtn" data-page="calculator">∑ <span data-i18n="calculator">Kalkulyator</span></button>
+  <button class="navbtn" data-page="encyclopedia">⌕ <span data-i18n="encyclopedia">AI ensiklopediya</span></button>
+  <button class="navbtn" data-page="vision">▧ <span data-i18n="vision">Vision OCR</span></button>
+  <button class="navbtn" data-page="studio">✺ <span data-i18n="studio">İllüstrasiya studiyası</span></button>
+  <button class="navbtn" data-page="news">↗ <span data-i18n="news">Təhsil xəbərləri</span><span class="ml-auto text-xs text-emerald-300">FREE</span></button>
+  <button class="navbtn" data-page="store">♙ <span data-i18n="store">Oyun mağazası</span></button>
+  <button class="navbtn" data-page="admin">👑 <span>Admin Panel</span><span class="ml-auto text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">99999</span></button>
+  <button class="navbtn" data-page="parent">▥ <span data-i18n="parent">Valideyn paneli</span></button>
+ </nav>
+ <div class="glass rounded-2xl p-4 mt-4"><div class="flex items-center justify-between"><span class="text-sm text-slate-300" data-i18n="wallet">Sikkə balansı</span><span>🪙</span></div><div class="text-2xl font-bold mt-1"><span id="coinBalance">1000</span> / <span class="text-xs text-slate-400">99999</span> <span class="text-sm font-medium text-amber-300">COIN</span></div><div class="h-1.5 bg-slate-700 rounded-full mt-3 overflow-hidden"><div id="coinBar" class="h-full bg-gradient-to-r from-amber-400 to-orange-500" style="width:1%"></div></div><p class="text-xs text-slate-500 mt-2" data-i18n="daily">Maksimum limit: 99999 sikkə</p></div>
+ <div class="flex items-center gap-3 pt-5 px-2"><div class="w-9 h-9 rounded-full bg-indigo-500/30 flex items-center justify-center">🎓</div><div class="flex-1"><div class="text-sm font-semibold" data-i18n="student">Niko Hesabı</div><div class="text-xs text-slate-500" data-i18n="level">Kəşfiyyatçı • Səviyyə 1</div></div><span class="text-emerald-400 text-xs">●</span></div>
+</aside>
+<div id="backdrop" class="hidden fixed inset-0 bg-black/60 z-30 md:hidden"></div>
+<main class="md:ml-72 min-h-screen">
+<header class="sticky top-0 z-20 px-4 md:px-8 py-4 border-b border-slate-700/30 bg-[#080d1b]/85 backdrop-blur-xl flex items-center gap-3"><button id="openSide" class="md:hidden btn">☰</button><div id="crumb" class="flex-1 text-sm text-slate-400">BilimStudio / <span class="text-white">İdarə paneli</span></div><select id="language" class="field !w-auto !py-2 text-sm" aria-label="Language"><option value="az">🇦🇿 Azərbaycan</option><option value="tr">🇹🇷 Türkçe</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option><option value="de">🇩🇪 Deutsch</option><option value="it">🇮🇹 Italiano</option><option value="fr">🇫🇷 Français</option></select><button id="themeBtn" class="btn" title="Toggle theme">☼</button><button id="apiBtn" class="btn text-sm">⚙ API</button></header>
+<div class="max-w-[1500px] mx-auto p-4 md:p-8">
+<section id="page-home" class="section active"><div class="soft rounded-3xl p-6 md:p-9 relative overflow-hidden"><div class="absolute -right-10 -top-16 w-64 h-64 rounded-full bg-indigo-500/20 blur-3xl"></div><div class="relative max-w-3xl"><div class="inline-flex rounded-full bg-indigo-400/10 text-indigo-200 px-3 py-1 text-xs border border-indigo-300/20">✦ <span data-i18n="personalAI">AI ilə fərdi öyrənmə</span></div><h1 class="text-3xl md:text-5xl font-black mt-5 leading-tight" data-i18n="hero">Cavabı əzbərləmə.<br><span class="text-cyan-300">Özün kəşf et.</span></h1><p class="text-slate-300 mt-4 max-w-2xl" data-i18n="heroDesc">BilimStudio AI sənə hazır cavab vermək əvəzinə, düzgün düşünməyə aparan suallar verir.</p><button class="btn primary mt-6" data-goto="chat" data-i18n="startLearn">Öyrənməyə başla →</button></div></div>
+<div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6"><div class="glass rounded-2xl p-5"><div class="text-2xl">🔥</div><div class="text-slate-400 text-sm mt-3" data-i18n="streak">Öyrənmə seriyası</div><div class="text-2xl font-bold mt-1">3 <span data-i18n="days">gün</span></div><div class="text-xs text-emerald-300 mt-2">+1 <span data-i18n="today">bu gün</span></div></div><div class="glass rounded-2xl p-5"><div class="text-2xl">🏆</div><div class="text-slate-400 text-sm mt-3" data-i18n="points">Toplanan xallar</div><div id="pointCount" class="text-2xl font-bold mt-1">0 XP</div><div class="text-xs text-indigo-300 mt-2" data-i18n="keepGoing">Davam et!</div></div><div class="glass rounded-2xl p-5"><div class="text-2xl">📚</div><div class="text-slate-400 text-sm mt-3" data-i18n="lessonsDone">Tamamlanan dərslər</div><div id="lessonCount" class="text-2xl font-bold mt-1">0</div><div class="text-xs text-slate-400 mt-2" data-i18n="weeklyGoal">Həftəlik hədəf: 8</div></div><div class="glass rounded-2xl p-5"><div class="text-2xl">🪙</div><div class="text-slate-400 text-sm mt-3" data-i18n="yourCoins">Sənin sikkələrin</div><div class="text-2xl font-bold mt-1"><span id="homeCoins">1000</span> <span class="text-xs text-slate-400">/ 99999</span></div><div class="text-xs text-amber-300 mt-2" data-i18n="earnMore">Tapşırıqlarla qazan</div></div></div>
+<div class="grid lg:grid-cols-3 gap-5 mt-6"><div class="glass rounded-2xl p-6 lg:col-span-2"><div class="flex justify-between items-center"><h2 class="font-bold text-lg" data-i18n="continueLearning">Öyrənməyə davam et</h2><span class="text-xs text-slate-400">3 courses</span></div><div class="space-y-4 mt-5"><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-blue-500/15 flex items-center justify-center text-2xl">⚛️</div><div class="flex-1"><div class="font-semibold">Fizika: Hərəkət qanunları</div><div class="text-xs text-slate-400 mt-1">4 / 6 mövzu</div><div class="h-1.5 rounded-full bg-slate-700 mt-2"><div class="h-full rounded-full bg-blue-400 w-2/3"></div></div></div><button class="btn" data-goto="lessons" data-i18n="continue">Davam et</button></div><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-emerald-500/15 flex items-center justify-center text-2xl">🧬</div><div class="flex-1"><div class="font-semibold">Biologiya: Hüceyrə</div><div class="text-xs text-slate-400 mt-1">2 / 5 mövzu</div><div class="h-1.5 rounded-full bg-slate-700 mt-2"><div class="h-full rounded-full bg-emerald-400 w-2/5"></div></div></div><button class="btn" data-goto="lessons" data-i18n="continue">Davam et</button></div><div class="flex items-center gap-4"><div class="w-12 h-12 rounded-xl bg-amber-500/15 flex items-center justify-center text-2xl">📐</div><div class="flex-1"><div class="font-semibold">Riyaziyyat: Funksiyalar</div><div class="text-xs text-slate-400 mt-1">1 / 4 mövzu</div><div class="h-1.5 rounded-full bg-slate-700 mt-2"><div class="h-full rounded-full bg-amber-400 w-1/4"></div></div></div><button class="btn" data-goto="lessons" data-i18n="continue">Davam et</button></div></div></div><div class="glass rounded-2xl p-6"><h2 class="font-bold text-lg" data-i18n="quickAccess">Sürətli keçid</h2><div class="grid grid-cols-2 gap-3 mt-5"><button data-goto="calculator" class="btn text-left"><div class="text-xl">🧮</div><div class="text-sm font-semibold mt-2" data-i18n="calculator">Kalkulyator</div><div class="text-xs text-emerald-300" data-i18n="freePro">Pulsuz / Pro</div></button><button data-goto="quiz" class="btn text-left"><div class="text-xl">🎯</div><div class="text-sm font-semibold mt-2" data-i18n="quiz">Milli kuizlər</div><div class="text-xs text-amber-300">+ coins</div></button><button data-goto="vision" class="btn text-left"><div class="text-xl">📷</div><div class="text-sm font-semibold mt-2" data-i18n="vision">Vision OCR</div></button><button data-goto="studio" class="btn text-left"><div class="text-xl">🎨</div><div class="text-sm font-semibold mt-2" data-i18n="studio">İllüstrasiya</div></button></div></div></div></section>
+
+<!-- ADMIN CONTROL PANEL SECTION -->
+<section id="page-admin" class="section">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div>
+      <h1 class="text-3xl font-black flex items-center gap-2">👑 Admin Control Panel <span class="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded-full border border-amber-500/30">Niko Special</span></h1>
+      <p class="text-slate-400 mt-1">Günlük sikkə artırma limiti: Maksimum <b>99999 sikkə</b></p>
+    </div>
+    <div id="adminStatusBadge" class="text-xs px-3 py-1.5 rounded-xl border bg-slate-800 text-slate-400">Sessiya: Şagird rejimi</div>
+  </div>
+
+  <div id="adminLoginBox" class="glass rounded-3xl p-6 max-w-md mx-auto my-8 border border-amber-500/20">
+    <h2 class="text-xl font-bold mb-3 flex items-center gap-2">🔐 Admin Girişi</h2>
+    <p class="text-xs text-slate-400 mb-4">Niko xüsusi admin kodunu daxil edin:</p>
+    <input id="adminPassInput" type="password" class="field mb-3" placeholder="Admin şifrəsi...">
+    <button id="adminLoginBtn" class="btn primary w-full">Daxil ol ↗</button>
+  </div>
+
+  <div id="adminControls" class="hidden space-y-6">
+    <div class="glass rounded-3xl p-6 border border-amber-500/30 soft">
+      <div class="flex items-center justify-between flex-wrap gap-4 mb-4">
+        <div>
+          <h3 class="text-lg font-bold text-amber-300">🪙 Gündəlik Sikkə Balansı Tənzimlənməsi</h3>
+          <p class="text-xs text-slate-300 mt-1">Sikkələri istədiyiniz qədər artıra bilərsiniz. Sistem avtomatik olaraq <b>99999 sikkə</b> limitində saxlayacaq.</p>
+        </div>
+        <div class="text-2xl font-black bg-slate-900/80 px-4 py-2 rounded-2xl border border-amber-500/30 text-amber-400">
+          <span id="adminCurrentCoins">1000</span> / 99999 🪙
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-4">
+        <button class="btn bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border-indigo-500/40 text-sm font-semibold" onclick="addCoinsAdmin(1000)">+1,000 Sikkə</button>
+        <button class="btn bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border-indigo-500/40 text-sm font-semibold" onclick="addCoinsAdmin(3000)">+3,000 Sikkə</button>
+        <button class="btn bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 border-indigo-500/40 text-sm font-semibold" onclick="addCoinsAdmin(10000)">+10,000 Sikkə</button>
+        <button class="btn bg-amber-500/20 hover:bg-amber-500/40 text-amber-200 border-amber-500/50 text-sm font-bold" onclick="addCoinsAdmin(98999)">+98,999 (MAX Limit)</button>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2 mt-4 pt-4 border-t border-slate-700/50">
+        <input id="customCoinAmount" type="number" class="field" placeholder="İstədiyiniz sikkə miqdarını yazın (Məsələn: 5000)">
+        <button id="applyCustomCoins" class="btn primary whitespace-nowrap">Balansa Əlavə Et</button>
+        <button id="setCoinsMax" class="btn bg-amber-500 hover:bg-amber-600 text-slate-950 font-black whitespace-nowrap">Birbaşa 99999 Et 🚀</button>
+      </div>
+    </div>
+
+    <!-- Sikkə Paketləri Satınalma UI Kartları (Dollar / $ Valyutalı) -->
+    <div>
+      <h3 class="text-xl font-bold mb-4 flex items-center gap-2">🛒 Sikkə Paketləri (Dollarlı Satınalma UI Kartları)</h3>
+      <div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">🪙</div>
+            <h4 class="font-bold mt-2 text-base">Mini Paketi</h4>
+            <p class="text-xs text-slate-400 mt-1">+10 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.02 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(10)">Al ($0.02)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">🪙</div>
+            <h4 class="font-bold mt-2 text-base">Eko Paketi</h4>
+            <p class="text-xs text-slate-400 mt-1">+50 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.05 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(50)">Al ($0.05)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">🪙</div>
+            <h4 class="font-bold mt-2 text-base">Standart Paket</h4>
+            <p class="text-xs text-slate-400 mt-1">+100 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.09 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(100)">Al ($0.09)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">🪙🪙</div>
+            <h4 class="font-bold mt-2 text-base">Super Paket</h4>
+            <p class="text-xs text-slate-400 mt-1">+250 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.25 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(250)">Al ($0.25)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">🪙🪙🪙</div>
+            <h4 class="font-bold mt-2 text-base">Mega Paket</h4>
+            <p class="text-xs text-slate-400 mt-1">+500 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.49 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(500)">Al ($0.49)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">💰</div>
+            <h4 class="font-bold mt-2 text-base">Pro Paket</h4>
+            <p class="text-xs text-slate-400 mt-1">+1,000 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$0.99 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(1000)">Al ($0.99)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-slate-700 hover:border-indigo-500/50 transition flex flex-col justify-between">
+          <div>
+            <div class="text-2xl">💎</div>
+            <h4 class="font-bold mt-2 text-base">VIP Paket</h4>
+            <p class="text-xs text-slate-400 mt-1">+10,000 Sikkə</p>
+            <div class="text-xl font-black text-amber-300 my-2">$8.99 USD</div>
+          </div>
+          <button class="btn primary w-full text-xs" onclick="addCoinsAdmin(10000)">Al ($8.99)</button>
+        </div>
+
+        <div class="glass rounded-2xl p-5 border border-amber-500/40 soft flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute -right-6 -top-6 w-20 h-20 bg-amber-500/20 rounded-full blur-xl"></div>
+          <div>
+            <div class="text-2xl">👑</div>
+            <h4 class="font-bold mt-2 text-base text-amber-300">ULTRA MAX Limit</h4>
+            <p class="text-xs text-slate-300 mt-1">+98,999 Sikkə (Maksimum 99999-a tamamlayır)</p>
+            <div class="text-xl font-black text-amber-400 my-2">$29.99 USD</div>
+          </div>
+          <button class="btn bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-extrabold w-full text-xs hover:brightness-110" onclick="addCoinsAdmin(98999)">Limitə Çatdır (Al)</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="page-chat" class="section"><div class="flex flex-wrap items-start justify-between gap-3 mb-5"><div><h1 class="text-2xl md:text-3xl font-extrabold" data-i18n="chatTitle">Sokratik AI müəllim</h1><p class="text-slate-400 mt-2" data-i18n="chatDesc">Hazır cavab yox — düşünməyə kömək edən suallar.</p></div><div class="flex gap-2"><button id="voiceBtn" class="btn">🎙 <span data-i18n="voice">Səslə danış</span></button><button id="speakBtn" class="btn">🔊 <span data-i18n="readAloud">Oxu</span></button></div></div><div class="grid xl:grid-cols-[1fr_270px] gap-5"><div class="glass rounded-2xl p-4 md:p-6"><div id="chatMessages" class="space-y-4 min-h-[320px] max-h-[55vh] overflow-y-auto pr-1"><div class="bubble ai" data-i18n="welcomeChat">Salam, Niko! Mən sənin BilimStudio müəlliminəm. 😊\n\nHansı mövzunu birlikdə araşdıraq? Mən hazır cavabı deməkdənsə, sənə addım-addım düşünməyə kömək edəcəyəm.</div></div><div class="flex flex-wrap gap-2 my-4"><button class="btn text-xs prompt" data-prompt="Fotosintez necə işləyir?">🌱 Fotosintez</button><button class="btn text-xs prompt" data-prompt="Kvadrat tənliyi başa düşmək istəyirəm">📐 Kvadrat tənlik</button><button class="btn text-xs prompt" data-prompt="Nyutonun ikinci qanunu nə deməkdir?">⚛️ Nyuton qanunu</button></div><form id="chatForm" class="flex gap-2"><input id="chatInput" class="field" data-i18n-placeholder="askPlaceholder" placeholder="Sualını yaz..." required><button class="btn primary" type="submit" data-i18n="send">Göndər ↗</button></form><div class="text-xs text-slate-500 mt-3" data-i18n="aiDisclaimer">AI bəzən səhv edə bilər. Vacib məlumatları müəllimlə yoxla.</div></div><div class="glass rounded-2xl p-5 h-fit"><h3 class="font-bold" data-i18n="socraticGuide">Sokratik bələdçi</h3><p class="text-sm text-slate-400 mt-2" data-i18n="socraticDesc">Müəllim cavabı demək əvəzinə anlayışını yoxlayır, ipucu verir və növbəti sualı verir.</p><div class="space-y-3 mt-5 text-sm"><div class="flex gap-3"><span class="text-xl">①</span><div><b data-i18n="step1">Araşdır</b><p class="text-slate-400" data-i18n="step1d">Nəyi artıq bilirsən?</p></div></div><div class="flex gap-3"><span class="text-xl">②</span><div><b data-i18n="step2">İpucu al</b><p class="text-slate-400" data-i18n="step2d">Kiçik istiqamət tap.</p></div></div><div class="flex gap-3"><span class="text-xl">③</span><div><b data-i18n="step3">Özün nəticə çıxar</b><p class="text-slate-400" data-i18n="step3d">Fikirləş və cavabını sına.</p></div></div><div class="border-t border-slate-700 pt-4 mt-4 text-amber-300 text-xs">+5 🪙 <span data-i18n="chatReward">Hər AI cavabından sonra gündəlik mükafat</span></div></div></div></div></section>
+<section id="page-lessons" class="section"><h1 class="text-3xl font-extrabold" data-i18n="lessonHeading">Dərs izahları</h1><p class="text-slate-400 mt-2" data-i18n="lessonDesc">Mövzunu seç, əsas ideyanı öyrən və özünü yoxla.</p><div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6" id="lessonGrid"></div></section>
+
+<!-- DİNAMİK MƏKTƏB KUIZLERI PANELİ -->
+<section id="page-quiz" class="section">
+  <h1 class="text-3xl font-extrabold" data-i18n="quizHeading">Milli və İnteraktiv AI Kuizlər</h1>
+  <p class="text-slate-400 mt-2">Bütün siniflər, fənlər və rəsmi məktəb proqramına uygun Gemini AI tərəfindən anında hazırlanan kuizlər.</p>
+  
+  <div class="glass rounded-3xl p-6 mt-6 border border-indigo-500/30">
+    <h3 class="text-lg font-bold text-cyan-300 mb-4">⚙️ Xüsusi Kuiz Yaratma Parametrləri</h3>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Sinif Seçin:</label>
+        <select id="quizGrade" class="field text-sm">
+          <option value="1">1-ci Sinif</option>
+          <option value="2">2-ci Sinif</option>
+          <option value="3" selected>3-cü Sinif</option>
+          <option value="4">4-cü Sinif</option>
+          <option value="5">5-ci Sinif</option>
+          <option value="6">6-cı Sinif</option>
+          <option value="7">7-ci Sinif</option>
+          <option value="8">8-ci Sinif</option>
+          <option value="9">9-cu Sinif</option>
+          <option value="10">10-cu Sinif</option>
+          <option value="11">11-ci Sinif</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Fənn Seçin:</label>
+        <select id="quizSubject" class="field text-sm">
+          <option value="Texnologiya" selected>Texnologiya</option>
+          <option value="Riyaziyyat">Riyaziyyat</option>
+          <option value="Ana Dili">Ana Dili / Azərbaycan Dili</option>
+          <option value="Biologiya">Biologiya</option>
+          <option value="Fizika">Fizika</option>
+          <option value="Kimya">Kimya</option>
+          <option value="İnformatika">İnformatika</option>
+          <option value="Tarix">Tarix</option>
+          <option value="Coğrafiya">Coğrafiya</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Qapalı Sual Sayı:</label>
+        <input id="quizClosedCount" type="number" class="field text-sm" value="13" min="1" max="30">
+      </div>
+
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Açıq Sual Sayı:</label>
+        <input id="quizOpenCount" type="number" class="field text-sm" value="2" min="0" max="10">
+      </div>
+    </div>
+
+    <!-- PDF Dərslik Yükləmə Bölməsi -->
+    <div class="mt-4 pt-4 border-t border-slate-700/50 flex flex-col md:flex-row items-center gap-4">
+      <div class="flex-1 w-full">
+        <label class="block text-xs text-slate-400 mb-1">📖 Dərslik və ya PDF Material Yüklə (İstəyə bağlı):</label>
+        <input id="quizPdfFile" type="file" accept="application/pdf,image/*" class="field text-xs">
+      </div>
+      <button id="generateAiQuizBtn" class="btn primary w-full md:w-auto px-6 py-3 whitespace-nowrap text-sm mt-3 md:mt-4">✨ AI ilə Kuizi Yarat</button>
+    </div>
+  </div>
+
+  <div class="grid lg:grid-cols-[1fr_300px] gap-5 mt-6">
+    <div class="glass rounded-2xl p-6">
+      <div class="flex justify-between"><span class="text-sm text-cyan-300" id="quizHeaderTag">QUIZ • Sokratik AI</span><span id="quizProgress" class="text-sm text-slate-400">0 / 0</span></div>
+      <div class="h-1.5 rounded-full bg-slate-700 mt-3"><div id="quizBar" class="h-full rounded-full bg-cyan-400 w-0"></div></div>
+      <div id="quizContainer" class="mt-6">
+        <h2 id="quizQuestion" class="text-xl font-bold">Yuxarıdan düyməyə basaraq AI ilə xüsusi kuiz yaradın.</h2>
+        <div id="quizAnswers" class="grid sm:grid-cols-2 gap-3 mt-5"></div>
+        <div id="quizOpenAnswerBox" class="hidden mt-4">
+          <textarea id="quizOpenInput" class="field" rows="3" placeholder="Açıq cavabınızı yazın..."></textarea>
+          <button id="submitOpenAnswer" class="btn primary mt-2 text-xs">Cavabı Təsdiqlə</button>
+        </div>
+      </div>
+      <div id="quizFeedback" class="mt-4 text-sm"></div>
+      <button id="nextQuiz" class="btn primary mt-5 hidden" data-i18n="nextQuestion">Növbəti sual →</button>
+    </div>
+
+    <div class="glass rounded-2xl p-6">
+      <div class="text-3xl">🏅</div>
+      <h3 class="font-bold text-lg mt-3" data-i18n="quizRewards">Kuiz mükafatları</h3>
+      <p class="text-slate-400 text-sm mt-2" data-i18n="quizRewardDesc">Düzgün cavab üçün +20 sikkə və +10 XP.</p>
+      <div class="border-t border-slate-700 mt-5 pt-4 flex justify-between"><span class="text-slate-400 text-sm" data-i18n="correctAnswers">Düzgün cavablar</span><b id="quizScore">0</b></div>
+      <div class="border-t border-slate-700 mt-4 pt-4 flex justify-between"><span class="text-slate-400 text-sm">XP</span><b id="quizXP">0</b></div>
+      <button id="restartQuiz" class="btn w-full mt-5" data-i18n="restart">Yenidən başla</button>
+    </div>
+  </div>
+</section>
+
+<section id="page-calculator" class="section"><div class="flex flex-wrap justify-between gap-3"><div><h1 class="text-3xl font-extrabold" data-i18n="calculatorHeading">Ağıllı kalkulyator</h1><p class="text-slate-400 mt-2" data-i18n="calculatorDesc">Sadə hesablamalar pulsuzdur. Elmi rejim hər hesablamada 5 sikkədir.</p></div><div class="flex gap-2"><button id="simpleMode" class="btn primary" data-i18n="simpleFree">Sadə • Pulsuz</button><button id="scientificMode" class="btn" data-i18n="scientificCoins">Elmi • 5 🪙</button></div></div><div class="grid lg:grid-cols-[minmax(0,520px)_1fr] gap-5 mt-6"><div class="glass rounded-2xl p-4 md:p-6"><div id="calcScreen" class="rounded-2xl bg-[#070b16] border border-slate-700 p-4 mb-4 text-right"><div id="calcExpression" class="text-slate-500 h-6 text-sm break-all"></div><input id="calcDisplay" class="w-full bg-transparent text-right text-3xl md:text-4xl font-semibold outline-none mt-2" value="0" aria-label="Calculator display" autocomplete="off"></div><div id="scientificKeys" class="hidden grid grid-cols-4 gap-2 mb-2"><button class="calc-key op" data-fn="sin">sin</button><button class="calc-key op" data-fn="cos">cos</button><button class="calc-key op" data-fn="tan">tan</button><button class="calc-key op" data-fn="log">log</button><button class="calc-key op" data-fn="sqrt">√x</button><button class="calc-key op" data-fn="pow">xⁿ</button><button class="calc-key op" data-fn="fact">n!</button><button class="calc-key op" data-fn="ans">ANS</button></div><div class="grid grid-cols-4 gap-2" id="calcKeys"><button class="calc-key op" data-act="clear">AC</button><button class="calc-key op" data-act="delete">⌫</button><button class="calc-key op" data-val="(">(</button><button class="calc-key op" data-val=")">)</button><button class="calc-key" data-val="7">7</button><button class="calc-key" data-val="8">8</button><button class="calc-key" data-val="9">9</button><button class="calc-key op" data-val="/">÷</button><button class="calc-key" data-val="4">4</button><button class="calc-key" data-val="5">5</button><button class="calc-key" data-val="6">6</button><button class="calc-key op" data-val="*">×</button><button class="calc-key" data-val="1">1</button><button class="calc-key" data-val="2">2</button><button class="calc-key" data-val="3">3</button><button class="calc-key op" data-val="-">−</button><button class="calc-key" data-val="0">0</button><button class="calc-key" data-val=".">.</button><button class="calc-key op" data-val="%">%</button><button class="calc-key op" data-val="+">+</button><button class="calc-key col-span-4 eq" data-act="equals" data-i18n="calculate">= Hesabla</button></div><p id="calcNote" class="text-xs text-slate-500 mt-4" data-i18n="calcNote">Sadə rejim pulsuzdur. ANS əvvəlki nəticəni daxil edir.</p></div><div class="glass rounded-2xl p-6"><div class="flex justify-between items-center"><h2 class="font-bold text-lg" data-i18n="calcHistory">Hesablama tarixçəsi</h2><button id="clearHistory" class="text-xs text-slate-400 hover:text-white" data-i18n="clearHistory">Təmizlə</button></div><div id="calcHistory" class="space-y-3 mt-5"><p class="text-slate-500 text-sm" data-i18n="noHistory">Hələ hesablama yoxdur.</p></div><p class="text-xs text-slate-500 mt-5" data-i18n="scientificHint">Elmi rejimdə sin/cos/tan dərəcə ilə işləyir. Elmi rejimdə hər hesablama 5 sikkədir.</p></div></div></section>
+<section id="page-encyclopedia" class="section"><h1 class="text-3xl font-extrabold" data-i18n="encyHeading">AI Ensiklopediya</h1><p class="text-slate-400 mt-2" data-i18n="encyDesc">Mövzunu araşdır, anlayışları sadə dildə öyrən.</p><div class="glass rounded-2xl p-6 mt-6"><form id="encyForm" class="flex flex-col sm:flex-row gap-2"><input id="encyInput" class="field" data-i18n-placeholder="encyPlaceholder" placeholder="Məsələn: Qara dəliklər nədir?" required><button class="btn primary" data-i18n="research">Araşdır</button></form><div id="encyResult" class="mt-5 text-slate-300 leading-7" data-i18n="encyEmpty">Mövzu yazaraq Sokratik izah əldə et.</div></div><div class="grid md:grid-cols-3 gap-4 mt-5"><button class="glass rounded-2xl p-5 text-left" data-ency="DNT necə məlumat saxlayır?"><span class="text-2xl">🧬</span><b class="block mt-3">DNT və genetika</b><span class="text-sm text-slate-400" data-i18n="dnaDesc">Canlıların təlimatı</span></button><button class="glass rounded-2xl p-5 text-left" data-ency="Qara dəlik necə yaranır?"><span class="text-2xl">🌌</span><b class="block mt-3" data-i18n="space">Kosmos</b><span class="text-sm text-slate-400" data-i18n="spaceDesc">Kainatın sirləri</span></button><button class="glass rounded-2xl p-5 text-left" data-ency="Süni intellekt necə öyrənir?"><span class="text-2xl">🤖</span><b class="block mt-3" data-i18n="aiLearning">Süni intellekt</b><span class="text-sm text-slate-400" data-i18n="aiLearningDesc">Maşın öyrənməsi</span></button></div></section>
+<section id="page-vision" class="section"><h1 class="text-3xl font-extrabold" data-i18n="visionHeading">Vision OCR — şəkildən öyrən</h1><p class="text-slate-400 mt-2" data-i18n="visionDesc">Məsələnin və ya əl yazısının şəklini yüklə. AI mətni oxuyub Sokratik istiqamət verəcək.</p><div class="grid lg:grid-cols-2 gap-5 mt-6"><div class="glass rounded-2xl p-6"><label class="block text-sm mb-3" data-i18n="chooseImage">Şəkil seç (JPG, PNG, WEBP)</label><input id="visionFile" type="file" accept="image/*" class="field"><img id="visionPreview" class="hidden mt-4 max-h-72 mx-auto rounded-xl" alt="Preview"><textarea id="visionPrompt" class="field mt-4" rows="3" data-i18n-placeholder="visionPromptPlaceholder" placeholder="Əlavə kontekst: hansı hissəni başa düşmək istəyirsən?"></textarea><button id="visionAnalyze" class="btn primary w-full mt-4" data-i18n="analyzeImage">Şəkli təhlil et • AI</button><p class="text-xs text-slate-500 mt-3" data-i18n="privacyNote">AI API açarı tələb olunur. Şəxsi məlumat olan şəkilləri yükləmə.</p></div><div class="glass rounded-2xl p-6"><h2 class="font-bold text-lg" data-i18n="visionResultTitle">Sokratik təhlil</h2><div id="visionResult" class="mt-4 text-slate-400 leading-7" data-i18n="visionEmpty">Şəkil nəticəsi burada görünəcək.</div></div></div></section>
+<section id="page-studio" class="section"><h1 class="text-3xl font-extrabold" data-i18n="studioHeading">AI İllüstrasiya studiyası</h1><p class="text-slate-400 mt-2" data-i18n="studioDesc">Elmi anlayışları vizual təsvirə çevir.</p><div class="grid lg:grid-cols-2 gap-5 mt-6"><div class="glass rounded-2xl p-6"><label class="block text-sm mb-2" data-i18n="imagePromptLabel">Nə çəkmək istəyirsən?</label><textarea id="imagePrompt" class="field" rows="5" data-i18n-placeholder="imagePlaceholder" placeholder="Məsələn: Bitki hüceyrəsinin hissələrini göstərən elmi illüstrasiya..."></textarea><div class="flex flex-wrap gap-2 mt-3"><button class="btn text-xs imgpreset" data-prompt="Günəş sisteminin planetlərini göstərən, Azərbaycan dilində etiketli, rəngli təhsil illüstrasiyası">🪐 <span data-i18n="sunSystem">Günəş sistemi</span></button><button class="btn text-xs imgpreset" data-prompt="Bitki hüceyrəsinin orqanoidlərini göstərən elmi kəsik diaqramı, Azərbaycan dilində etiketlər">🧬 <span data-i18n="cell">Hüceyrə</span></button></div><button id="generateImage" class="btn primary w-full mt-4" data-i18n="generateImage">✦ İllüstrasiya yarat • 50 🪙</button><p class="text-xs text-slate-500 mt-3" data-i18n="imageCostNote">Şəkil yaratma hər cəhddə 50 sikkə istifadə edir. Gemini 3.1 Flash Image modeli istifadə olunur.</p></div><div class="glass rounded-2xl p-6 min-h-64"><div id="imageStatus" class="text-slate-400" data-i18n="imageEmpty">Yaradılan şəkil burada görünəcək.</div><img id="generatedImage" class="hidden w-full rounded-xl mt-3" alt="AI-generated scientific illustration"><a id="downloadImage" class="hidden btn mt-3 inline-block" download="bilimstudio-illustration.png" data-i18n="downloadImage">Şəkli endir ↓</a></div></div></section>
+
+<!-- XƏBƏRLƏR VƏ UŞAQ JURNALLARI SECTION -->
+<section id="page-news" class="section">
+  <div class="flex flex-wrap justify-between items-start gap-3">
+    <div>
+      <h1 class="text-3xl font-extrabold" data-i18n="newsHeading">Təhsil, Elm və Uşaq Xəbərləri</h1>
+      <p class="text-slate-400 mt-2" data-i18n="newsDesc">Bütün ölkələr üzrə rəsmi mənbələr və Children Magazines — 100% pulsuzdur.</p>
+    </div>
+    <span class="rounded-full bg-emerald-400/10 text-emerald-300 px-3 py-1 text-xs">100% FREE</span>
+  </div>
+
+  <!-- Ölkə Filter Düymələri -->
+  <div class="flex flex-wrap gap-2 mt-6">
+    <button class="btn primary text-xs news-filter" data-country="all">🌍 Hamısı</button>
+    <button class="btn text-xs news-filter" data-country="az">🇦🇿 Azərbaycan</button>
+    <button class="btn text-xs news-filter" data-country="tr">🇹🇷 Türkiyə</button>
+    <button class="btn text-xs news-filter" data-country="magazines">📚 Children Magazines (Uşaq Jurnalları)</button>
+    <button class="btn text-xs news-filter" data-country="global">🌐 Beynəlxalq Elm</button>
+  </div>
+
+  <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-4 mt-6" id="newsGrid">
+    <a href="https://edu.gov.az/" target="_blank" data-cat="az" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🇦🇿</div><h2 class="font-bold text-lg mt-4">Elm və Təhsil Nazirliyi</h2><p class="text-sm text-slate-400 mt-2">Azərbaycan Respublikasının rəsmi təhsil portalı və yeniliklər.</p><span class="text-cyan-300 text-sm inline-block mt-5">edu.gov.az ↗</span></a>
+    
+    <a href="https://dim.gov.az/" target="_blank" data-cat="az" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">📝</div><h2 class="font-bold text-lg mt-4">Dövlət İmtahan Mərkəzi (DİM)</h2><p class="text-sm text-slate-400 mt-2">İmtahan tarixləri, məktəb proqramları və nəticələr.</p><span class="text-cyan-300 text-sm inline-block mt-5">dim.gov.az ↗</span></a>
+
+    <a href="https://www.meb.gov.tr/" target="_blank" data-cat="tr" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🇹🇷</div><h2 class="font-bold text-lg mt-4">Millî Eğitim Bakanlığı (MEB)</h2><p class="text-sm text-slate-400 mt-2">Türkiye Cumhuriyeti resmî eğitim haberleri ve müfredat güncellemeleri.</p><span class="text-cyan-300 text-sm inline-block mt-5">meb.gov.tr ↗</span></a>
+
+    <a href="https://bilimcocuk.tubitak.gov.tr/" target="_blank" data-cat="tr magazines" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🚀</div><h2 class="font-bold text-lg mt-4">TÜBİTAK Bilim Çocuk</h2><p class="text-sm text-slate-400 mt-2">Çocuklar için eğlenceli bilim dergisi ve makaleler.</p><span class="text-cyan-300 text-sm inline-block mt-5">bilimcocuk.tubitak.gov.tr ↗</span></a>
+
+    <a href="https://www.natgeokids.com/" target="_blank" data-cat="magazines global" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🦁</div><h2 class="font-bold text-lg mt-4">National Geographic Kids</h2><p class="text-sm text-slate-400 mt-2">Uşaqlar üçün təbiət, heyvanlar və elm jurnalı (Children Magazine).</p><span class="text-cyan-300 text-sm inline-block mt-5">natgeokids.com ↗</span></a>
+
+    <a href="https://www.highlightskids.com/" target="_blank" data-cat="magazines global" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🎈</div><h2 class="font-bold text-lg mt-4">Highlights Kids Magazine</h2><p class="text-sm text-slate-400 mt-2">Interaktiv oyunlar, bulmacalar və uşaq jurnalları.</p><span class="text-cyan-300 text-sm inline-block mt-5">highlightskids.com ↗</span></a>
+
+    <a href="https://science.nasa.gov/" target="_blank" data-cat="global" class="news-card glass rounded-2xl p-6 hover:border-cyan-400/60 transition block"><div class="text-3xl">🛰️</div><h2 class="font-bold text-lg mt-4">NASA Science for Kids</h2><p class="text-sm text-slate-400 mt-2">Kosmos, planetlər və elmi kəşflər.</p><span class="text-cyan-300 text-sm inline-block mt-5">science.nasa.gov ↗</span></a>
+  </div>
+</section>
+
+<section id="page-store" class="section"><h1 class="text-3xl font-extrabold" data-i18n="storeHeading">Virtual oyun mağazası</h1><p class="text-slate-400 mt-2" data-i18n="storeDesc">Sikkələrinlə öyrənmə təcrübəni fərdiləşdir.</p><div class="grid md:grid-cols-3 gap-4 mt-6"><div class="glass rounded-2xl p-6"><div class="text-4xl">🎨</div><h2 class="font-bold mt-4" data-i18n="avatar">Profil avatarı</h2><p class="text-sm text-slate-400 mt-2" data-i18n="avatarDesc">Profilinə rəngli çərçivə əlavə et.</p><div class="mt-4 font-bold text-amber-300">120 🪙</div><button class="btn primary w-full mt-4 buy" data-cost="120" data-item="Profil avatarı" data-i18n="buy">Al</button></div><div class="glass rounded-2xl p-6"><div class="text-4xl">🚀</div><h2 class="font-bold mt-4" data-i18n="spaceTheme">Kosmik mövzu</h2><p class="text-sm text-slate-400 mt-2" data-i18n="spaceThemeDesc">Kosmosdan ilhamlanan profil nişanı.</p><div class="mt-4 font-bold text-amber-300">250 🪙</div><button class="btn primary w-full mt-4 buy" data-cost="250" data-item="Kosmik mövzu" data-i18n="buy">Al</button></div><div class="glass rounded-2xl p-6"><div class="text-4xl">💡</div><h2 class="font-bold mt-4" data-i18n="hintPack">İpucu paketi</h2><p class="text-sm text-slate-400 mt-2" data-i18n="hintPackDesc">Kuizlər üçün 3 əlavə ipucu.</p><div class="mt-4 font-bold text-amber-300">80 🪙</div><button class="btn primary w-full mt-4 buy" data-cost="80" data-item="İpucu paketi" data-i18n="buy">Al</button></div></div><div id="storeMsg" class="text-sm text-slate-400 mt-4"></div></section>
+<section id="page-parent" class="section"><h1 class="text-3xl font-extrabold" data-i18n="parentHeading">Valideyn analitika paneli</h1><p class="text-slate-400 mt-2" data-i18n="parentDesc">Bu brauzerdəki demo fəaliyyət göstəriciləri.</p><div class="grid sm:grid-cols-2 xl:grid-cols-4 gap-4 mt-6"><div class="glass rounded-2xl p-5"><div class="text-slate-400 text-sm" data-i18n="studyTime">Öyrənmə vaxtı</div><div class="text-3xl font-bold mt-2">4s 35d</div><div class="text-xs text-emerald-300 mt-2" data-i18n="weekDemo">Bu həftə • demo</div></div><div class="glass rounded-2xl p-5"><div class="text-slate-400 text-sm" data-i18n="quizAccuracy">Kuiz dəqiqliyi</div><div id="parentAccuracy" class="text-3xl font-bold mt-2">—</div><div class="text-xs text-slate-400 mt-2" data-i18n="quizHistory">Cavab tarixçəsinə əsasən</div></div><div class="glass rounded-2xl p-5"><div class="text-slate-400 text-sm" data-i18n="earnedXP">Qazanılan XP</div><div id="parentXP" class="text-3xl font-bold mt-2">0</div><div class="text-xs text-slate-400 mt-2" data-i18n="thisSession">Bu sessiya</div></div><div class="glass rounded-2xl p-5"><div class="text-slate-400 text-sm" data-i18n="completedLessons">Tamamlanan dərslər</div><div id="parentLessons" class="text-3xl font-bold mt-2">0</div><div class="text-xs text-slate-400 mt-2" data-i18n="demoMetric">Demo göstəricisi</div></div></div><div class="glass rounded-2xl p-6 mt-5"><h2 class="font-bold text-lg" data-i18n="privacyTitle">Məxfilik və valideyn nəzarəti</h2><p class="text-sm text-slate-400 mt-2" data-i18n="privacyDesc">Bu tək fayllı nümunədə məlumatlar serverə göndərilmir (AI sorğuları istisna olmaqla) və hesablar arasında sinxronlaşmır. Real valideyn paneli üçün giriş, server bazası və razılıq mexanizmləri qurulmalıdır.</p><button id="exportData" class="btn mt-4" data-i18n="exportData">Fəaliyyət xülasəsini endir (JSON)</button></div></section>
+<footer class="text-center text-xs text-slate-600 py-10">© 2026 BilimStudio AI • <span data-i18n="footer">Öyrənmək bir kəşfdir</span> ✦</footer>
+</div></main></div>
+
+<div id="apiModal" class="hidden fixed inset-0 z-50 bg-black/70 p-4 flex items-center justify-center"><div class="glass rounded-2xl p-6 w-full max-w-xl"><div class="flex justify-between items-center"><h2 class="font-bold text-xl" data-i18n="apiSettings">Gemini API parametrləri</h2><button id="closeApi" class="btn">✕</button></div><p class="text-sm text-slate-400 mt-3" data-i18n="apiSecurity">API açarı yalnız cari səhifə yaddaşında saxlanır. İctimai saytda açarı HTML-ə yazma — server/proxy istifadə et.</p><label class="block text-sm mt-5 mb-2" data-i18n="apiKeyLabel">API açarı</label><input id="apiKey" type="password" class="field" placeholder="AIza..." autocomplete="off"><label class="block text-sm mt-4 mb-2" data-i18n="textModelLabel">Mətn / Vision modeli</label><input id="textModel" class="field" value="gemini-2.5-flash"><label class="block text-sm mt-4 mb-2" data-i18n="imageModelLabel">Şəkil yaratma modeli</label><input id="imageModel" class="field" value="imagen-3.0-generate-002"><div class="mt-6 flex justify-end gap-2"><button id="saveApi" class="btn primary" data-i18n="save">Yadda saxla</button></div></div></div>
+
+<script>
+// State
+let state = {
+  coins: parseInt(localStorage.getItem('bilim_coins')) || 1000,
+  maxCoins: 99999,
+  xp: 0,
+  lessonsDone: 0,
+  calcMode: 'simple',
+  calcExpr: '',
+  calcAns: 0,
+  quizIndex: 0,
+  quizScore: 0,
+  quizXP: 0,
+  quizAnswered: false,
+  activeAiQuiz: [],
+  apiKey: localStorage.getItem('bilim_apiKey') || '',
+  textModel: localStorage.getItem('bilim_textModel') || 'gemini-2.5-flash',
+  imageModel: localStorage.getItem('bilim_imageModel') || 'imagen-3.0-generate-002',
+  isAdmin: false
+};
+
+// Translations (Azerbaijani + Turkish + Others)
+const t = {
+  az: {
+    home: "İdarə paneli", chat: "Sokratik müəllim", lessons: "Dərs izahları", quiz: "Milli kuizlər", calculator: "Kalkulyator", encyclopedia: "AI ensiklopediya", vision: "Vision OCR", studio: "İllüstrasiya studiyası", news: "Təhsil xəbərləri", store: "Oyun mağazası", parent: "Valideyn paneli",
+    wallet: "Sikkə balansı", daily: "Maksimum limit: 99999 sikkə", student: "Niko Hesabı", level: "Kəşfiyyatçı • Səviyyə 1",
+    personalAI: "AI ilə fərdi öyrənmə", hero: "Cavabı əzbərləmə.<br><span class='text-cyan-300'>Özün kəşf et.</span>", heroDesc: "BilimStudio AI sənə hazır cavab vermək əvəzinə, düzgün düşünməyə aparan suallar verir.", startLearn: "Öyrənməyə başla →",
+    streak: "Öyrənmə seriyası", days: "gün", today: "bu gün", points: "Toplanan xallar", keepGoing: "Davam et!", lessonsDone: "Tamamlanan dərslər", weeklyGoal: "Həftəlik hədəf: 8", yourCoins: "Sənin sikkələrin", earnMore: "Tapşırıqlarla qazan",
+    continueLearning: "Öyrənməyə davam et", continue: "Davam et", quickAccess: "Sürətli keçid", freePro: "Pulsuz / Pro",
+    chatTitle: "Sokratik AI müəllim", chatDesc: "Hazır cavab yox — düşünməyə kömək edən suallar.", voice: "Səslə danış", readAloud: "Oxu", welcomeChat: "Salam, Niko! Mən sənin BilimStudio müəlliminəm. 😊\n\nHansı mövzunu birlikdə araşdıraq? Mən hazır cavabı deməkdənsə, sənə addım-addım düşünməyə kömək edəcəyəm.",
+    askPlaceholder: "Sualını yaz...", send: "Göndər ↗", aiDisclaimer: "AI bəzən səhv edə bilər. Vacib məlumatları müəllimlə yoxla.",
+    socraticGuide: "Sokratik bələdçi", socraticDesc: "Müəllim cavabı demək əvəzinə anlayışını yoxlayır, ipucu verir və növbəti sualı verir.",
+    step1: "Araşdır", step1d: "Nəyi artıq bilirsən?", step2: "İpucu al", step2d: "Kiçik istiqamət tap.", step3: "Özün nəticə çıxar", step3d: "Fikirləş və cavabını sına.", chatReward: "Hər AI cavabından sonra gündəlik mükafat",
+    lessonHeading: "Dərs izahları", lessonDesc: "Mövzunu seç, əsas ideyanı öyrən və özünü yoxla.",
+    quizHeading: "Milli və İnteraktiv AI Kuizlər", quizDesc: "Azərbaycan və dünya məktəb proqramına uyğun tapşırıqlar.", nextQuestion: "Növbəti sual →", quizRewards: "Kuiz mükafatları", quizRewardDesc: "+20 sikkə və +10 XP.", correctAnswers: "Düzgün cavablar", restart: "Yenidən başla",
+    calculatorHeading: "Ağıllı kalkulyator", calculatorDesc: "Sadə hesablamalar pulsuzdur. Elmi rejim hər hesablamada 5 sikkədir.", simpleFree: "Sadə • Pulsuz", scientificCoins: "Elmi • 5 🪙", calculate: "= Hesabla", calcNote: "Sadə rejim pulsuzdur. ANS əvvəlki nəticəni daxil edir.", calcHistory: "Hesablama tarixçəsi", clearHistory: "Təmizlə", noHistory: "Hələ hesablama yoxdur.", scientificHint: "Elmi rejimdə sin/cos/tan dərəcə ilə işləyir. Elmi rejimdə hər hesablama 5 sikkədir.",
+    encyHeading: "AI Ensiklopediya", encyDesc: "Mövzunu araşdır, anlayışları sadə dildə öyrən.", research: "Araşdır", encyEmpty: "Mövzu yazaraq Sokratik izah əldə et.", dnaDesc: "Canlıların təlimatı", space: "Kosmos", spaceDesc: "Kainatın sirləri", aiLearning: "Süni intellekt", aiLearningDesc: "Maşın öyrənməsi",
+    visionHeading: "Vision OCR — şəkildən öyrən", visionDesc: "Məsələnin və ya əl yazısının şəklini yüklə. AI mətni oxuyub Sokratik istiqamət verəcək.", chooseImage: "Şəkil seç (JPG, PNG, WEBP)", visionPromptPlaceholder: "Əlavə kontekst: hansı hissəni başa düşmək istəyirsən?", analyzeImage: "Şəkli təhlil et • AI", privacyNote: "AI API açarı tələb olunur. Şəxsi məlumat olan şəkilləri yükləmə.", visionResultTitle: "Sokratik təhlil", visionEmpty: "Şəkil nəticəsi burada görünəcək.",
+    studioHeading: "AI İllüstrasiya studiyası", studioDesc: "Elmi anlayışları vizual təsvirə çevir.", imagePromptLabel: "Nə çəkmək istəyirsən?", imagePlaceholder: "Məsələn: Bitki hüceyrəsinin hissələrini göstərən elmi illüstrasiya...", sunSystem: "Günəş sistemi", cell: "Hüceyrə", generateImage: "✦ İllüstrasiya yarat • 50 🪙", imageCostNote: "Şəkil yaratma hər cəhddə 50 sikkə istifadə edir.", imageEmpty: "Yaradılan şəkil burada görünəcək.", downloadImage: "Şəkli endir ↓",
+    newsHeading: "Təhsil, Elm və Uşaq Xəbərləri", newsDesc: "Rəsmi mənbələrə və Children Magazines keçidlər — 100% pulsuzdur.", ministry: "Elm və Təhsil Nazirliyi", ministryDesc: "Rəsmi elanlar, təhsil siyasəti və yeniliklər.", dim: "Dövlət İmtahan Mərkəzi (DİM)", dimDesc: "İmtahan tarixləri, qəbul qaydaları və nəticələr.", nasaDesc: "Kosmos, planetlər və elmi missiyalar.", natgeoDesc: "Təbiət, elm və araşdırmalar.", scienceDesc: "Beynəlxalq elmi araşdırmalar və xəbərlər.", esa: "Avropa Kosmik Agentliyi", esaDesc: "Kosmik missiyalar, peyklər və kəşflər.",
+    storeHeading: "Virtual oyun mağazası", storeDesc: "Sikkələrinlə öyrənmə təcrübəni fərdiləşdir.", avatar: "Profil avatarı", avatarDesc: "Profilinə rəngli çərçivə əlavə et.", spaceTheme: "Kosmik mövzu", spaceThemeDesc: "Kosmosdan ilhamlanan profil nişanı.", hintPack: "İpucu paketi", hintPackDesc: "Kuizlər üçün 3 əlavə ipucu.", buy: "Al",
+    parentHeading: "Valideyn analitika paneli", parentDesc: "Bu brauzerdəki demo fəaliyyət göstəriciləri.", studyTime: "Öyrənmə vaxtı", weekDemo: "Bu həftə • demo", quizAccuracy: "Kuiz dəqiqliyi", quizHistory: "Cavab tarixçəsinə əsasən", earnedXP: "Qazanılan XP", thisSession: "Bu sessiya", completedLessons: "Tamamlanan dərslər", demoMetric: "Demo göstəricisi", privacyTitle: "Məxfilik və valideyn nəzarəti", privacyDesc: "Bu tək fayllı nümunədə məlumatlar serverə göndərilmir.", exportData: "Fəaliyyət xülasəsini endir (JSON)",
+    apiSettings: "Gemini API parametrləri", apiSecurity: "API açarı yalnız cari səhifə yaddaşında saxlanır.", apiKeyLabel: "API açarı", textModelLabel: "Mətn / Vision modeli", imageModelLabel: "Şəkil yaratma modeli", save: "Yadda saxla",
+    footer: "Öyrənmək bir kəşfdir", workspace: "İş sahəsi", tagline: "Öyrən, kəşf et, düşün"
+  },
+  tr: {
+    home: "Kontrol Paneli", chat: "Sokratik Öğretmen", lessons: "Ders Anlatımları", quiz: "Milli Quizler", calculator: "Hesap Makinesi", encyclopedia: "Yapay Zeka Ansiklopedi", vision: "Vision OCR", studio: "İllüstrasyon Stüdyosu", news: "Eğitim Haberleri", store: "Oyun Mağazası", parent: "Veli Paneli",
+    wallet: "Jeton Bakiyesi", daily: "Maksimum limit: 99999 jeton", student: "Niko Hesabı", level: "Kaşif • Seviye 1",
+    personalAI: "Yapay Zeka ile Kişisel Öğrenme", hero: "Cevabı ezberleme.<br><span class='text-cyan-300'>Kendin keşfet.</span>", heroDesc: "BilimStudio AI doğrudan cevap vermek yerine düşünmeni sağlayan sorular sorar.", startLearn: "Öğrenmeye Başla →",
+    streak: "Öğrenme Serisi", days: "gün", today: "bugün", points: "Toplam Puan", keepGoing: "Devam Et!", lessonsDone: "Tamamlanan Dersler", weeklyGoal: "Haftalık Hedef: 8", yourCoins: "Jetonların", earnMore: "Görevlerle Kazan",
+    continueLearning: "Öğrenmeye Devam Et", continue: "Devam Et", quickAccess: "Hızlı Erişim", freePro: "Ücretsiz / Pro",
+    chatTitle: "Sokratik AI Öğretmen", chatDesc: "Hazır cevap yok — düşünmeye yardımcı sorular var.", voice: "Sesli Konuş", readAloud: "Oku", welcomeChat: "Merhaba Niko! Ben senin BilimStudio öğretmeninim. 😊\n\nHangi konuyu birlikte inceleyelim?",
+    askPlaceholder: "Sorunu yaz...", send: "Gönder ↗", aiDisclaimer: "AI bazen hata yapabilir. Önemli bilgileri kontrol et.",
+    socraticGuide: "Sokratik Rehber", socraticDesc: "Öğretmen cevabı vermek yerine anlayışını test eder.",
+    step1: "İncele", step1d: "Zaten ne biliyorsun?", step2: "İpucu Al", step2d: "Küçük bir yön bul.", step3: "Sonuç Çıkar", step3d: "Düşün ve test et.", chatReward: "Her AI cevabından sonra günlük ödül",
+    lessonHeading: "Ders Anlatımları", lessonDesc: "Konuyu seç, temel fikri öğren ve kendini test et.",
+    quizHeading: "Milli ve Etkileşimli AI Quizler", quizDesc: "Müfrebata uygun sorular.", nextQuestion: "Sonraki Soru →", quizRewards: "Quiz Ödülləri", quizRewardDesc: "+20 jeton ve +10 XP.", correctAnswers: "Doğru Cevaplar", restart: "Yeniden Başlat",
+    calculatorHeading: "Akıllı Hesap Makinesi", calculatorDesc: "Basit hesaplamalar ücretsizdir.", simpleFree: "Basit • Ücretsiz", scientificCoins: "Bilimsel • 5 🪙", calculate: "= Hesapla", calcNote: "Basit mod ücretsizdir.", calcHistory: "Geçmiş", clearHistory: "Temizle", noHistory: "Henüz hesaplama yok.", scientificHint: "Bilimsel modda sin/cos/tan derece kullanır.",
+    encyHeading: "AI Ansiklopedi", encyDesc: "Konuları incele.", research: "Araştır", encyEmpty: "Sokratik açıklama için konu yazın.", dnaDesc: "Yaşamın rehberi", space: "Uzay", spaceDesc: "Evrenin sırları", aiLearning: "Yapay Zeka", aiLearningDesc: "Makine öğrenimi",
+    visionHeading: "Vision OCR — Görselden Öğren", visionDesc: "Soru görseli yükleyin.", chooseImage: "Görsel Seç", visionPromptPlaceholder: "Ek bağlam yazın...", analyzeImage: "Görseli Analiz Et", privacyNote: "API anahtarı gereklidir.", visionResultTitle: "Sokratik Analiz", visionEmpty: "Sonuç burada görünecektir.",
+    studioHeading: "AI İllüstrasyon Stüdyosu", studioDesc: "Görsel çizimler oluşturun.", imagePromptLabel: "Ne çizmek istiyorsun?", imagePlaceholder: "Örn: Bitki hücresi organelleri...", sunSystem: "Güneş Sistemi", cell: "Hücre", generateImage: "✦ İllüstrasyon Oluştur • 50 🪙", imageCostNote: "Her deneme 50 jetondur.", imageEmpty: "Oluşturulan görsel burada görünecek.", downloadImage: "Görseli İndir ↓",
+    newsHeading: "Eğitim, Bilim ve Çocuk Haberleri", newsDesc: "Resmî kaynaklar ve Çocuk Dergileri.", ministry: "Milli Eğitim Bakanlığı", ministryDesc: "Resmî duyurular.", dim: "ÖSYM / DİM", dimDesc: "Sınav tarihleri.", nasaDesc: "Uzay ve görevler.", natgeoDesc: "Doğa ve bilim.", scienceDesc: "Uluslararası bilim haberleri.", esa: "Avrupa Uzay Ajansı", esaDesc: "Uzay görevleri.",
+    storeHeading: "Sanal Oyun Mağazası", storeDesc: "Jetonlarınla deneyimini kişiselleştir.", avatar: "Profil Avatarı", avatarDesc: "Renkli çerçeve ekle.", spaceTheme: "Uzay Teması", spaceThemeDesc: "Rozet ekle.", hintPack: "İpucu Paketi", hintPackDesc: "3 ek ipucu.", buy: "Satın Al",
+    parentHeading: "Veli Analitik Paneli", parentDesc: "Demo göstergeleri.", studyTime: "Çalışma Süresi", weekDemo: "Bu hafta • demo", quizAccuracy: "Quiz Başarısı", quizHistory: "Geçmişe dayalı", earnedXP: "Kazanılan XP", thisSession: "Bu oturum", completedLessons: "Tamamlanan Dersler", demoMetric: "Demo metriği", privacyTitle: "Gizlilik", privacyDesc: "Veriler sunucuya gönderilmez.", exportData: "Özeti İndir (JSON)",
+    apiSettings: "Gemini API Ayarları", apiSecurity: "API anahtarı yalnızca tarayıcıda saklanır.", apiKeyLabel: "API Anahtarı", textModelLabel: "Metin / Vision Modeli", imageModelLabel: "Görsel Üretim Modeli", save: "Kaydet",
+    footer: "Öğrenmek bir keşiftir", workspace: "Çalışma Alanı", tagline: "Öğren, keşfet, düşün"
+  }
+};
+
+let currentLang = 'az';
+
+function setLanguage(lang) {
+  currentLang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (t[lang] && t[lang][key]) {
+      el.innerHTML = t[lang][key];
+    }
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (t[lang] && t[lang][key]) {
+      el.setAttribute('placeholder', t[lang][key]);
+    }
+  });
+}
+
+// Navigation
+document.querySelectorAll('#nav button, [data-goto]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const page = btn.getAttribute('data-page') || btn.getAttribute('data-goto');
+    if (!page) return;
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('page-' + page).classList.add('active');
+    document.querySelectorAll('#nav button').forEach(b => b.classList.remove('active'));
+    const navBtn = document.querySelector(`#nav button[data-page="${page}"]`);
+    if (navBtn) navBtn.classList.add('active');
+    document.getElementById('crumb').innerHTML = `BilimStudio / <span class="text-white">${navBtn ? navBtn.innerText.trim() : page}</span>`;
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('backdrop').classList.add('hidden');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+});
+
+document.getElementById('openSide').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('backdrop').classList.remove('hidden');
+});
+document.getElementById('closeSide').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.add('hidden');
+});
+document.getElementById('backdrop').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').classList.add('hidden');
+});
+
+// Theme toggle
+let isDark = true;
+document.getElementById('themeBtn').addEventListener('click', () => {
+  isDark = !isDark;
+  document.body.classList.toggle('light', !isDark);
+  document.getElementById('themeBtn').textContent = isDark ? '☼' : '☾';
+});
+
+// Language change
+document.getElementById('language').addEventListener('change', (e) => {
+  setLanguage(e.target.value);
+});
+
+// News Country Filter Logic
+document.querySelectorAll('.news-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.news-filter').forEach(b => b.className = 'btn text-xs news-filter');
+    btn.className = 'btn primary text-xs news-filter';
+    const country = btn.getAttribute('data-country');
+    const cards = document.querySelectorAll('.news-card');
+    cards.forEach(card => {
+      const cats = card.getAttribute('data-cat').split(' ');
+      if (country === 'all' || cats.includes(country)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+// API Modal
+document.getElementById('apiBtn').addEventListener('click', () => {
+  document.getElementById('apiKey').value = state.apiKey;
+  document.getElementById('textModel').value = state.textModel;
+  document.getElementById('imageModel').value = state.imageModel;
+  document.getElementById('apiModal').classList.remove('hidden');
+});
+document.getElementById('closeApi').addEventListener('click', () => {
+  document.getElementById('apiModal').classList.add('hidden');
+});
+document.getElementById('saveApi').addEventListener('click', () => {
+  state.apiKey = document.getElementById('apiKey').value.trim();
+  state.textModel = document.getElementById('textModel').value.trim() || 'gemini-2.5-flash';
+  state.imageModel = document.getElementById('imageModel').value.trim() || 'imagen-3.0-generate-002';
+  localStorage.setItem('bilim_apiKey', state.apiKey);
+  localStorage.setItem('bilim_textModel', state.textModel);
+  localStorage.setItem('bilim_imageModel', state.imageModel);
+  document.getElementById('apiModal').classList.add('hidden');
+});
+
+// Coins & Limit Logic
+function updateUI() {
+  if (state.coins > state.maxCoins) {
+    state.coins = state.maxCoins;
+  }
+  localStorage.setItem('bilim_coins', state.coins);
+
+  document.getElementById('coinBalance').textContent = state.coins;
+  document.getElementById('homeCoins').textContent = state.coins;
+  if(document.getElementById('adminCurrentCoins')) {
+    document.getElementById('adminCurrentCoins').textContent = state.coins;
+  }
+
+  const pct = Math.min(100, Math.max(1, (state.coins / state.maxCoins) * 100));
+  document.getElementById('coinBar').style.width = pct + '%';
+
+  document.getElementById('pointCount').textContent = state.xp + ' XP';
+  document.getElementById('lessonCount').textContent = state.lessonsDone;
+  document.getElementById('quizScore').textContent = state.quizScore;
+  document.getElementById('quizXP').textContent = state.quizXP;
+  document.getElementById('parentXP').textContent = state.quizXP;
+  document.getElementById('parentLessons').textContent = state.lessonsDone;
+  const acc = state.quizIndex > 0 ? Math.round((state.quizScore / state.quizIndex) * 100) + '%' : '—';
+  document.getElementById('parentAccuracy').textContent = acc;
+}
+
+// ADMIN PANEL LOGIC (Niko Private Passcode)
+document.getElementById('adminLoginBtn').addEventListener('click', () => {
+  const pass = document.getElementById('adminPassInput').value;
+  if (pass === 'AdminNihadİsmayılzadə2014') {
+    state.isAdmin = true;
+    document.getElementById('adminLoginBox').classList.add('hidden');
+    document.getElementById('adminControls').classList.remove('hidden');
+    document.getElementById('adminStatusBadge').textContent = 'Sessiya: Niko (ADMIN Active 👑)';
+    document.getElementById('adminStatusBadge').className = 'text-xs px-3 py-1.5 rounded-xl border bg-amber-500/20 text-amber-300 border-amber-500/40 font-bold';
+  } else {
+    alert('Səhv admin şifrəsi!');
+  }
+});
+
+function addCoinsAdmin(amount) {
+  if (state.coins + amount > state.maxCoins) {
+    state.coins = state.maxCoins;
+    alert(`Limit keçildi! Sikkə balansı maksimum ${state.maxCoins} limitinə tamamlandı.`);
+  } else {
+    state.coins += amount;
+  }
+  updateUI();
+}
+
+document.getElementById('applyCustomCoins').addEventListener('click', () => {
+  const val = parseInt(document.getElementById('customCoinAmount').value);
+  if (!isNaN(val) && val > 0) {
+    addCoinsAdmin(val);
+    document.getElementById('customCoinAmount').value = '';
+  }
+});
+
+document.getElementById('setCoinsMax').addEventListener('click', () => {
+  state.coins = state.maxCoins;
+  updateUI();
+});
+
+// Gemini API Call helper
+async function callGeminiText(promptText, fileBase64 = null) {
+  if (!state.apiKey) {
+    return "⚠️ Zəhmət olmasa yuxarıdakı '⚙ API' düyməsini sıxaraq Gemini API açarınızı daxil edin.";
+  }
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${state.textModel}:generateContent?key=${state.apiKey}`;
+  
+  let parts = [{ text: promptText }];
+  if (fileBase64) {
+    const b64Data = fileBase64.split(',')[1];
+    const mime = fileBase64.substring(fileBase64.indexOf(':') + 1, fileBase64.indexOf(';'));
+    parts.push({ inline_data: { mime_type: mime, data: b64Data } });
+  }
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ contents: [{ parts: parts }] })
+  });
+  const data = await response.json();
+  if (data.candidates && data.candidates[0].content.parts[0].text) {
+    return data.candidates[0].content.parts[0].text;
+  } else {
+    throw new Error(data.error?.message || "API xətası baş verdi.");
+  }
+}
+
+// Chat functionality
+const chatMessages = document.getElementById('chatMessages');
+document.getElementById('chatForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const input = document.getElementById('chatInput');
+  const txt = input.value.trim();
+  if (!txt) return;
+  input.value = '';
+
+  const userBubble = document.createElement('div');
+  userBubble.className = 'bubble user';
+  userBubble.textContent = txt;
+  chatMessages.appendChild(userBubble);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  const loadingBubble = document.createElement('div');
+  loadingBubble.className = 'bubble ai';
+  loadingBubble.textContent = 'Düşünürəm... 💭';
+  chatMessages.appendChild(loadingBubble);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+
+  try {
+    const aiResp = await callGeminiText("Sən Niko-nun BilimStudio AI Sokratik müəllimisən. Hazır cavab vermə, əksinə şagirdə yönəldici suallar ver. Dil: " + currentLang + ". Sual: " + txt);
+    loadingBubble.textContent = aiResp;
+    addCoinsAdmin(5);
+    state.xp += 10;
+    updateUI();
+  } catch(err) {
+    loadingBubble.textContent = 'Xəta: ' + err.message;
+  }
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+});
+
+document.querySelectorAll('.prompt').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById('chatInput').value = btn.getAttribute('data-prompt');
+  });
+});
+
+// DİNAMİK AI KUIZ GENERASİYASI VƏ İCRA MEXANİZMİ
+let uploadedPdfBase64 = null;
+document.getElementById('quizPdfFile').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (evt) => {
+    uploadedPdfBase64 = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+document.getElementById('generateAiQuizBtn').addEventListener('click', async () => {
+  const grade = document.getElementById('quizGrade').value;
+  const subject = document.getElementById('quizSubject').value;
+  const closedCount = parseInt(document.getElementById('quizClosedCount').value) || 10;
+  const openCount = parseInt(document.getElementById('quizOpenCount').value) || 2;
+
+  const btn = document.getElementById('generateAiQuizBtn');
+  btn.textContent = '⏳ AI Kuizi Hazırlayır...';
+  btn.disabled = true;
+
+  const prompt = `Sən rəsmi təhsil proqramı mütəxəssisisən. ${grade}-ci sinif ${subject} fənni üzrə məktəb dərslik proqramına tam uyğun olaraq ${closedCount} ədəd qapalı (4 variantlı: 0,1,2,3 indeksi ilə) və ${openCount} ədəd açıq sualdan ibarət JSON massivi yarat.
+GÖNDƏRİLƏCƏK FORMAT YALNIZ CLEAN JSON OLMALIDIR (heç bir markdown köməkçi sözlər yazma):
+[
+  {"type": "closed", "q": "Sual mətni", "opts": ["Variant A", "Variant B", "Variant C", "Variant D"], "ans": 1},
+  {"type": "open", "q": "Açıq sual mətni", "ans": "Gözlənilən cavab açarı"}
+]
+Hər şey səlis, dəqiq və şagird səviyyəsinə tam uyğun olsun. Dil: ${currentLang}.`;
+
+  try {
+    const rawResp = await callGeminiText(prompt, uploadedPdfBase64);
+    let jsonStr = rawResp.trim();
+    if (jsonStr.startsWith("```json")) jsonStr = jsonStr.substring(7);
+    if (jsonStr.startsWith("```")) jsonStr = jsonStr.substring(3);
+    if (jsonStr.endsWith("```")) jsonStr = jsonStr.substring(0, jsonStr.length - 3);
+
+    state.activeAiQuiz = JSON.parse(jsonStr.trim());
+    state.quizIndex = 0;
+    state.quizScore = 0;
+    document.getElementById('quizHeaderTag').textContent = `${grade}-cı Sinif • ${subject}`;
+    loadDynamicQuiz();
+  } catch (err) {
+    alert("Kuiz hazırlayarkən xəta yarandı: " + err.message + "\nYenidən cəhd edin.");
+  } finally {
+    btn.textContent = '✨ AI ilə Kuizi Yarat';
+    btn.disabled = false;
+  }
+});
+
+function loadDynamicQuiz() {
+  if (!state.activeAiQuiz || state.activeAiQuiz.length === 0) {
+    return;
+  }
+
+  if (state.quizIndex >= state.activeAiQuiz.length) {
+    document.getElementById('quizQuestion').textContent = "Təbriklər! Xüsusi AI Kuizi uğurla tamamladınız. 🎉";
+    document.getElementById('quizAnswers').innerHTML = '';
+    document.getElementById('quizOpenAnswerBox').classList.add('hidden');
+    document.getElementById('quizFeedback').textContent = `Toplam Nəticə: ${state.quizScore} / ${state.activeAiQuiz.length}`;
+    document.getElementById('nextQuiz').classList.add('hidden');
+    return;
+  }
+
+  const item = state.activeAiQuiz[state.quizIndex];
+  document.getElementById('quizProgress').textContent = `${state.quizIndex + 1} / ${state.activeAiQuiz.length}`;
+  document.getElementById('quizBar').style.width = `${((state.quizIndex + 1) / state.activeAiQuiz.length) * 100}%`;
+  document.getElementById('quizQuestion').textContent = item.q;
+  document.getElementById('quizFeedback').textContent = '';
+  state.quizAnswered = false;
+  document.getElementById('nextQuiz').classList.add('hidden');
+
+  const ansDiv = document.getElementById('quizAnswers');
+  const openBox = document.getElementById('quizOpenAnswerBox');
+  ansDiv.innerHTML = '';
+
+  if (item.type === 'closed' || item.opts) {
+    openBox.classList.add('hidden');
+    ansDiv.classList.remove('hidden');
+    item.opts.forEach((opt, i) => {
+      const b = document.createElement('button');
+      b.className = 'btn text-left p-3';
+      b.textContent = opt;
+      b.addEventListener('click', () => {
+        if (state.quizAnswered) return;
+        state.quizAnswered = true;
+        if (i === item.ans) {
+          b.style.borderColor = '#10b981';
+          b.style.background = '#10b98122';
+          document.getElementById('quizFeedback').innerHTML = '<span class="text-emerald-400 font-semibold">Düzgündür! +20 🪙, +10 XP</span>';
+          state.quizScore++;
+          state.quizXP += 10;
+          addCoinsAdmin(20);
+          state.xp += 10;
+          updateUI();
+        } else {
+          b.style.borderColor = '#ef4444';
+          b.style.background = '#ef444422';
+          document.getElementById('quizFeedback').innerHTML = `<span class="text-rose-400 font-semibold">Səhvdir. Düzgün cavab: ${item.opts[item.ans]}</span>`;
+        }
+        document.getElementById('nextQuiz').classList.remove('hidden');
+      });
+      ansDiv.appendChild(b);
+    });
+  } else {
+    // Açıq Sual Rejimi
+    ansDiv.classList.add('hidden');
+    openBox.classList.remove('hidden');
+    document.getElementById('quizOpenInput').value = '';
+    
+    document.getElementById('submitOpenAnswer').onclick = () => {
+      if (state.quizAnswered) return;
+      state.quizAnswered = true;
+      const userText = document.getElementById('quizOpenInput').value.trim();
+      document.getElementById('quizFeedback').innerHTML = `<span class="text-cyan-300 font-semibold">Cavabınız qəbul olundu. İzah / Açarlar: ${item.ans} (+20 🪙)</span>`;
+      state.quizScore++;
+      state.quizXP += 10;
+      addCoinsAdmin(20);
+      state.xp += 10;
+      updateUI();
+      document.getElementById('nextQuiz').classList.remove('hidden');
+    };
+  }
+}
+
+document.getElementById('nextQuiz').addEventListener('click', () => {
+  state.quizIndex++;
+  loadDynamicQuiz();
+});
+
+document.getElementById('restartQuiz').addEventListener('click', () => {
+  state.quizIndex = 0;
+  state.quizScore = 0;
+  state.quizXP = 0;
+  loadDynamicQuiz();
+  updateUI();
+});
+
+// Voice, Calculator, Vision, Encyclopedia, Store JS setup
+const calcDisplay = document.getElementById('calcDisplay');
+const calcExpression = document.getElementById('calcExpression');
+const calcHistoryDiv = document.getElementById('calcHistory');
+let historyList = [];
+
+document.getElementById('simpleMode').addEventListener('click', () => {
+  state.calcMode = 'simple';
+  document.getElementById('simpleMode').className = 'btn primary';
+  document.getElementById('scientificMode').className = 'btn';
+  document.getElementById('scientificKeys').classList.add('hidden');
+});
+document.getElementById('scientificMode').addEventListener('click', () => {
+  state.calcMode = 'scientific';
+  document.getElementById('scientificMode').className = 'btn primary';
+  document.getElementById('simpleMode').className = 'btn';
+  document.getElementById('scientificKeys').classList.remove('hidden');
+});
+
+document.querySelectorAll('#calcKeys button, #scientificKeys button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const val = btn.getAttribute('data-val');
+    const act = btn.getAttribute('data-act');
+    const fn = btn.getAttribute('data-fn');
+
+    if (val !== null) {
+      if (calcDisplay.value === '0' || calcDisplay.value === 'Xəta') calcDisplay.value = '';
+      calcDisplay.value += val;
+    } else if (act === 'clear') {
+      calcDisplay.value = '0';
+      calcExpression.textContent = '';
+    } else if (act === 'delete') {
+      calcDisplay.value = calcDisplay.value.slice(0, -1) || '0';
+    } else if (act === 'equals') {
+      try {
+        let expr = calcDisplay.value.replace(/×/g, '*').replace(/÷/g, '/');
+        let res = eval(expr);
+        calcExpression.textContent = calcDisplay.value + ' =';
+        calcDisplay.value = res;
+        state.calcAns = res;
+        addHistory(calcExpression.textContent + ' ' + res);
+      } catch(e) {
+        calcDisplay.value = 'Xəta';
+      }
+    } else if (fn) {
+      if (state.calcMode === 'scientific') {
+        if (state.coins < 5) {
+          alert("Sikkə balansınız kifayət deyil (Elmi rejim 5 sikkə tələb edir).");
+          return;
+        }
+        state.coins -= 5;
+        updateUI();
+      }
+      let num = parseFloat(calcDisplay.value) || 0;
+      let res = 0;
+      if (fn === 'sin') res = Math.sin(num * Math.PI / 180);
+      else if (fn === 'cos') res = Math.cos(num * Math.PI / 180);
+      else if (fn === 'tan') res = Math.tan(num * Math.PI / 180);
+      else if (fn === 'sqrt') res = Math.sqrt(num);
+      else if (fn === 'ans') res = state.calcAns;
+      else if (fn === 'log') res = Math.log10(num);
+      calcExpression.textContent = `${fn}(${num}) =`;
+      calcDisplay.value = res;
+      state.calcAns = res;
+      addHistory(calcExpression.textContent + ' ' + res);
+    }
+  });
+});
+
+function addHistory(item) {
+  historyList.unshift(item);
+  if (historyList.length > 10) historyList.pop();
+  calcHistoryDiv.innerHTML = historyList.map(h => `<div class="text-sm p-2 rounded bg-slate-800/40 border border-slate-700/50">${h}</div>`).join('');
+}
+
+document.getElementById('clearHistory').addEventListener('click', () => {
+  historyList = [];
+  calcHistoryDiv.innerHTML = '<p class="text-slate-500 text-sm">Hələ hesablama yoxdur.</p>';
+});
+
+// Export data
+document.getElementById('exportData').addEventListener('click', () => {
+  const summary = {
+    user: "Niko",
+    coins: state.coins,
+    xp: state.xp,
+    lessonsDone: state.lessonsDone,
+    quizScore: state.quizScore,
+    date: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(summary, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'bilimstudio-activity-summary.json';
+  a.click();
+});
+
+setLanguage('az');
+updateUI();
+</script>
+</body>
+</html>
